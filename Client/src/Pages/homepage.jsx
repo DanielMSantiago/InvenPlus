@@ -1,4 +1,5 @@
 import { Row, Container } from "reactstrap";
+import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Header from "../Components/Header";
 
@@ -7,8 +8,12 @@ const HomePage = () => {
     <Container>
       <Header />
       <Row className="button-row">
-        <Button className="home-button">Enter Invoice</Button>
-        <Button className="home-button">View Inventory</Button>
+        <Link to="/EnterInvoice">
+          <Button className="home-button">Enter Invoice</Button>
+        </Link>
+        <Link to="/ViewInventory">
+          <Button className="home-button">View Inventory</Button>
+        </Link>
       </Row>
     </Container>
   );

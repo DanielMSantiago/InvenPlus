@@ -1,15 +1,17 @@
-import HomePage from "./Pages/homepage";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
+import HomePage from "./Pages/homepage";
+import EnterInvoice from "./Pages/EnterInvoice";
+import ViewInventory from "./Pages/ViewInventory";
 
 function App() {
   return (
     <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="EnterInvoice" element={<EnterInvoice />} />
+        <Route path="ViewInventory" element={<ViewInventory />} />
+      </Routes>
     </div>
   );
 }
