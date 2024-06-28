@@ -14,6 +14,9 @@ const HomePage = () => {
         <Link to="/ViewInventory">
           <Button className="home-button">View Inventory</Button>
         </Link>
+        <Link to="/ViewInvoice">
+          <Button className="home-button">View Invoice</Button>
+        </Link>
       </Row>
     </Container>
   );
