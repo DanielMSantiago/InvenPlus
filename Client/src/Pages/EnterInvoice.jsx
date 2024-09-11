@@ -24,6 +24,20 @@ const EnterInvoice = () => {
     },
   ]);
 
+  const [formData, setFormData] = {
+    poNum: "",
+    invoiceNum: "",
+    distributor: "",
+    branch: "",
+    customerName: "",
+    warrant: "",
+    amount: "",
+    itemName: "",
+    modelNum: "",
+    serialNum: "",
+    price: "",
+  };
+
   const handleRowChange = (id, event) => {
     const { name, value, type, checked } = event.target;
     setFormRows((prevRows) =>
@@ -50,10 +64,20 @@ const EnterInvoice = () => {
     ]);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const serializedBody = JSON.stringify(formData);
+    const fetchOptions = {
+      method: "POST",
+      body: serializedBody,
+    };
+    fetch("/enterinvoice", fetchOptions);
+  };
+
   return (
     <div>
       <h1>Enter Order Information</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         <TextField
           label="PO Number"
           name="poNum"
