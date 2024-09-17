@@ -24,7 +24,7 @@ const EnterInvoice = () => {
     },
   ]);
 
-  const [formData, setFormData] = {
+  const [formData, setFormData] = useState({
     poNum: "",
     invoiceNum: "",
     distributor: "",
@@ -36,6 +36,14 @@ const EnterInvoice = () => {
     modelNum: "",
     serialNum: "",
     price: "",
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleRowChange = (id, event) => {
@@ -83,36 +91,45 @@ const EnterInvoice = () => {
           name="poNum"
           variant="outlined"
           sx={{ marginBottom: 2 }}
+          value={formData.poNum}
         />
         <TextField
           label="Distributor Invoice Number"
           name="invoiceNum"
           variant="outlined"
           sx={{ marginBottom: 2 }}
+          value={formData.invoiceNum}
         />
         <TextField
           label="Distributor"
           name="distributor"
           variant="outlined"
           sx={{ marginBottom: 2 }}
+          value={formData.distributor}
         />
         <TextField
           label="Distributor Branch"
           name="branch"
           variant="outlined"
           sx={{ marginBottom: 2 }}
+          value={formData.branch}
         />
         <TextField
           label="Customer Name"
           name="customerName"
           variant="outlined"
           sx={{ marginBottom: 2 }}
+          value={formData.customerName}
         />
         <FormControl sx={{ m: 1, minWidth: 150 }}>
           <InputLabel id="warranty-label">Warranty</InputLabel>
           <Select labelId="warranty-label" name="warranty" label="Warranty">
-            <MenuItem value={true}>Yes</MenuItem>
-            <MenuItem value={false}>No</MenuItem>
+            <MenuItem value={true} name="yes">
+              Yes
+            </MenuItem>
+            <MenuItem value={false} name="false">
+              No
+            </MenuItem>
           </Select>
         </FormControl>
       </form>
