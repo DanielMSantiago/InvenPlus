@@ -85,7 +85,7 @@ const EnterInvoice = () => {
   return (
     <div>
       <h1>Enter Order Information</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} method="POST" action="/api/InvoiceEnter">
         <TextField
           label="PO Number"
           name="poNum"

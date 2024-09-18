@@ -45,3 +45,7 @@ const InvoiceSchema = new Schema({
     required: [true, "Price Needed"],
   },
 });
+
+const InvoiceModel = mongoose.model("invoice", InvoiceSchema);
+
+module.exports = InvoiceModel;
