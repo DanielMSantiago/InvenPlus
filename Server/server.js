@@ -1,11 +1,13 @@
 // server.js
 const express = require("express");
+const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const UserModel = require("./models/invoice");
+const UserModel = require("./models/invoice.jsx");
 const path = require("path");
+dotenv.config()
 
 const app = express();
-const connectionUrl = "mongodb://localhost:27017/HVACInventory";
+const connectionUrl = "mongodb+srv://111-aZ:<db_password>@cluster1.y8fehmu.mongodb.net/";
 
 mongoose.connect(
   connectionUrl, { useNewUrlParser: true, useUnifiedTopology: true },

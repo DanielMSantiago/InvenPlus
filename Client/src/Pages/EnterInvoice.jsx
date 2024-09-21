@@ -91,7 +91,7 @@ const EnterInvoice = () => {
           name="poNum"
           variant="outlined"
           sx={{ marginBottom: 2 }}
-          value={formData.poNum}
+          // value={formData.poNum}
         />
         <TextField
           label="Distributor Invoice Number"
