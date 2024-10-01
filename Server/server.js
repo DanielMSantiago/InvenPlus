@@ -1,15 +1,35 @@
-// server.js
 const express = require("express");
-const mongodb = require("mongodb")
-const homepage = require('../../hvac-inventory-new/Client/src/Pages/homepage.jsx')
-const UserModel = require("./models/invoice.jsx");
 const path = require("path");
-const app = express()
+const mongodb = require("mongodb");
+const UserModel = require("./models/invoice.jsx"); // assuming this is a backend model for MongoDB
 
-app.get("/", (req, res) => {
-  res.render(homepage)
-})
+const app = express();
 
-app.post()
+// Serve static files from the React app's build directory
+app.use(express.static(path.join(__dirname, '../../hvac-inventory-new/Client/build')));
 
-app.listen(3000)
+// Middleware for parsing request bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// API route for handling invoices (example)
+app.post("/api/invoice", async (req, res) => {
+  try {
+    const { data } = req.body; // Extract data from the request
+    const newInvoice = new UserModel(data); // Assuming UserModel is a Mongoose model
+    await newInvoice.save(); // Save the invoice to MongoDB
+    res.status(201).json({ message: "Invoice saved successfully!" });
+  } catch (error) {
+    res.status(500).json({ error: "Error saving invoice" });
+  }
+});
+
+// All other requests will serve the React app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, '../../hvac-inventory-new/Client/build/index.html'));
+});
+
+// Start the server
+app.listen(3000, () => {
+  console.log("Server is running on http://localhost:3000");
+});
