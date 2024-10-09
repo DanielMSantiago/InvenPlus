@@ -8,10 +8,10 @@ import ViewInvoice from "./Pages/viewinvoice.jsx";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />{" "}
-      <Route path="/EnterInvoice" element={<EnterInvoice />} />{" "}
-      <Route path="/ViewInventory" element={<ViewInventory />} />{" "}
-      <Route path="/ViewInvoice" element={<ViewInvoice />} />{" "}
+      <Route path="/" element={<HomePage />} />
+      <Route path="/EnterInvoice" element={<EnterInvoice />} />
+      <Route path="/ViewInventory" element={<ViewInventory />} />
+      <Route path="/ViewInvoice" element={<ViewInvoice />} />
     </Routes>
   );
 }

@@ -7,15 +7,24 @@ const HomePage = () => {
   return (
     <Container>
       <Header />
-      <Row className="button-row">
-        <Link to="/EnterInvoice">
-          <Button className="home-button">Enter Invoice</Button>
+      <Row
+        className="button-row"
+        style={{ display: "flex", justifyContent: "center", gap: "1rem" }}
+      >
+        <Link to="/EnterInvoice" style={{ textDecoration: "none" }}>
+          <Button variant="contained" color="primary" className="home-button">
+            Enter Invoice
+          </Button>
         </Link>
-        <Link to="/ViewInventory">
-          <Button className="home-button">View Inventory</Button>
+        <Link to="/ViewInventory" style={{ textDecoration: "none" }}>
+          <Button variant="contained" color="primary" className="home-button">
+            View Inventory
+          </Button>
         </Link>
-        <Link to="/ViewInvoice">
-          <Button className="home-button">View Invoice</Button>
+        <Link to="/ViewInvoice" style={{ textDecoration: "none" }}>
+          <Button variant="contained" color="primary" className="home-button">
+            View Invoice
+          </Button>
         </Link>
       </Row>
     </Container>

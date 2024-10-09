@@ -63,132 +63,165 @@ const EnterInvoice = () => {
       },
     ]);
   };
+  const handleFormChange = (e) => {
+    setFormData((prevalue) => {
+      return {
+        ...prevalue,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const serializedBody = JSON.stringify(formData);
+    const dataToSend = {
+      formData,
+      formRows,
+    };
     const fetchOptions = {
       method: "POST",
-      body: serializedBody,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataToSend),
     };
-    fetch("/enterinvoice", fetchOptions);
+    fetch("/api/InvoiceEnter", fetchOptions)
+      .then((response) => response.json())
+      .then((data) => console.log("Success:", data))
+      .catch((error) => console.error("Error:", error));
   };
 
   return (
     <div>
       <h1>Enter Order Information</h1>
-      <form onSubmit={handleSubmit} method="POST" action="/api/InvoiceEnter">
+      <form onSubmit={handleSubmit}>
         <TextField
           label="PO Number"
           name="poNum"
+          value={formData.poNum}
+          onChange={handleFormChange}
           variant="outlined"
           sx={{ marginBottom: 2 }}
         />
         <TextField
           label="Distributor Invoice Number"
           name="invoiceNum"
+          value={formData.invoiceNum}
+          onChange={handleFormChange}
           variant="outlined"
           sx={{ marginBottom: 2 }}
         />
         <TextField
           label="Distributor"
           name="distributor"
+          value={formData.distributor}
+          onChange={handleFormChange}
           variant="outlined"
           sx={{ marginBottom: 2 }}
         />
         <TextField
           label="Distributor Branch"
           name="branch"
+          value={formData.branch}
+          onChange={handleFormChange}
           variant="outlined"
           sx={{ marginBottom: 2 }}
         />
         <TextField
           label="Customer Name"
           name="customerName"
+          value={formData.customerName}
+          onChange={handleFormChange}
           variant="outlined"
           sx={{ marginBottom: 2 }}
         />
         <FormControl sx={{ m: 1, minWidth: 150 }}>
           <InputLabel id="warranty-label">Warranty</InputLabel>
-          <Select labelId="warranty-label" name="warranty" label="Warranty">
-            <MenuItem value={true} name="yes">
-              Yes
-            </MenuItem>
-            <MenuItem value={false} name="no">
-              No
-            </MenuItem>
+          <Select
+            labelId="warranty-label"
+            name="warranty"
+            value={formData.warranty}
+            //onChange={handleFormChange}
+            label="Warranty"
+          >
+            <MenuItem value="yes">Yes</MenuItem>
+            <MenuItem value="no">No</MenuItem>
           </Select>
         </FormControl>
-      </form>
-      <div>
-        <h2>Order Items</h2>
-        {formRows.map((row, index) => (
-          <form
-            key={row.id}
-            style={{
-              marginTop: "16px",
-              border: "1px solid #ccc",
-              padding: "16px",
-            }}
-          >
-            <TextField
-              label="Amount Order"
-              name="amount"
-              variant="outlined"
-              value={row.amount}
-              onChange={(event) => handleRowChange(row.id, event)}
-              sx={{ marginBottom: 2 }}
-            />
-            <TextField
-              label="Item Name"
-              name="itemName"
-              variant="outlined"
-              value={row.itemName}
-              onChange={(event) => handleRowChange(row.id, event)}
-              sx={{ marginBottom: 2 }}
-            />
-            <TextField
-              label="Item Model"
-              name="modelNum"
-              variant="outlined"
-              value={row.modelNum}
-              onChange={(event) => handleRowChange(row.id, event)}
-              sx={{ marginBottom: 2 }}
-            />
-            <TextField
-              label="Item Serial"
-              name="serialNum"
-              variant="outlined"
-              value={row.serialNum}
-              onChange={(event) => handleRowChange(row.id, event)}
-              sx={{ marginBottom: 2 }}
-            />
-            <TextField
-              label="Item Price"
-              name="price"
-              variant="outlined"
-              value={row.price}
-              onChange={(event) => handleRowChange(row.id, event)}
-              sx={{ marginBottom: 2 }}
-            />
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={row.received}
-                    onChange={(event) => handleRowChange(row.id, event)}
-                    name="received"
-                  />
-                }
-                label="Received"
+
+        <div>
+          <h2>Order Items</h2>
+          {formRows.map((row) => (
+            <div
+              key={row.id}
+              style={{
+                marginTop: "16px",
+                border: "1px solid #ccc",
+                padding: "16px",
+              }}
+            >
+              <TextField
+                label="Amount Ordered"
+                name="amount"
+                value={row.amount}
+                onChange={(event) => handleRowChange(row.id, event)}
+                variant="outlined"
+                sx={{ marginBottom: 2 }}
               />
-            </FormGroup>
-          </form>
-        ))}
-        <Button variant="contained" onClick={addRow} sx={{ marginTop: 2 }}>
-          Add Item
-        </Button>
-      </div>
+              <TextField
+                label="Item Name"
+                name="itemName"
+                value={row.itemName}
+                onChange={(event) => handleRowChange(row.id, event)}
+                variant="outlined"
+                sx={{ marginBottom: 2 }}
+              />
+              <TextField
+                label="Item Model"
+                name="modelNum"
+                value={row.modelNum}
+                onChange={(event) => handleRowChange(row.id, event)}
+                variant="outlined"
+                sx={{ marginBottom: 2 }}
+              />
+              <TextField
+                label="Item Serial"
+                name="serialNum"
+                value={row.serialNum}
+                onChange={(event) => handleRowChange(row.id, event)}
+                variant="outlined"
+                sx={{ marginBottom: 2 }}
+              />
+              <TextField
+                label="Item Price"
+                name="price"
+                value={row.price}
+                onChange={(event) => handleRowChange(row.id, event)}
+                variant="outlined"
+                sx={{ marginBottom: 2 }}
+              />
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={row.received}
+                      onChange={(event) => handleRowChange(row.id, event)}
+                      name="received"
+                    />
+                  }
+                  label="Received"
+                />
+              </FormGroup>
+            </div>
+          ))}
+          <Button variant="contained" onClick={addRow} sx={{ marginTop: 2 }}>
+            Add Item
+          </Button>
+          <Button type="submit" variant="contained" sx={{ marginTop: 2 }}>
+            Submit Invoice
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };
