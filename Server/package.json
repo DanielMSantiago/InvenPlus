@@ -2,11 +2,12 @@
   "name": "url-database-invoice",
   "version": "1.0.0",
   "description": "Will store the information for invoices entered for the business",
-  "main": "server.js",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "devStart": "nodemon server.js "
+    "start": "node index.js",
+    "devStart": "nodemon index.js "
   },
   "author": "Daniel Santiago",
   "license": "ISC",
