@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const invoiceSchema = mongoose.Schema({
+const invoiceSchema = new mongoose.Schema({
     PoNumber: {
         type: Number,
         required: true,
@@ -48,4 +48,4 @@ const invoiceSchema = mongoose.Schema({
 
 })
 
-export const Invoice = mongoose.model(invoiceSchema)
+export const Invoice = mongoose.model("Invoice", invoiceSchema)
