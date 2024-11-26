@@ -52,6 +52,53 @@ app.post('/invoice', async (request, response) => {
     }
 });
 
+app.get('/invoice', async (request, response) => {
+    try {
+
+        const invoices = await Invoice.find({});
+        return response.status(200).json(invoices)
+
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+});
+
+app.get('/invoice/:PoNumber', async (request, response) => {
+    try {
+
+        const { PoNumber } = request.params
+        const invoices = await Invoice.findOne({ PoNumber })
+
+        return response.status(200).json(invoices)
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+});
+
+app.put('/invoice/:PoNumber', async (request, response) => {
+    try {
+        if (!request.body.PoNumber ||
+            !request.body.DistroInvoiceNum ||
+        ) {
+            return response.status(400).send({
+                message: "Send all required fields: PoNumber, Distributor Invoice Number"
+            });
+        }
+        const { PoNumber } = request.params;
+        const result = await Invoice.findOneAndUpdate({ PoNumber });
+
+        if (!result) {
+            return response.status(404).json({ message: "Invoice Not Found" })
+        }
+
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+})
+
 mongoose.connect(mongoDBURL).then(() => {
     console.log('App connected to database')
     app.listen(PORT, () => {
