@@ -1,6 +1,7 @@
-import { Container } from "reactstrap";
+import { Container, Table } from "reactstrap";
 import { FormControl, Select, MenuItem } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Spinner from "../Components/spinner";
 
 const ViewInvoice = () => {
   const [selectedValue, setSelectedValue] = useState("");
@@ -8,6 +9,23 @@ const ViewInvoice = () => {
   const handleDropChange = (e) => {
     setSelectedValue(e.target.value);
   };
+
+  const [invoice, setInvoice] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get("http://localhost:5555/invoice")
+      .then((response) => {
+        setInvoice(response.data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  });
 
   return (
     <Container>
@@ -25,8 +43,33 @@ const ViewInvoice = () => {
         </Select>
       </FormControl>
       <InputLabel value={selectedValue}></InputLabel>
-    </Container>
-  );
+    {loading ? (
+      <Spinner/>
+    ) : (
+      <table className="w-full border-separate border-spacing-2" >
+
+        <thead>
+          <tr>
+            <th className="border-slate-600 rounded-md">PO</th>
+            <th className="border-slate-600 rounded-md">Invoice Number</th>
+            <th className="border-slate-600 rounded-md">Distributor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {invoice.map((invoice, index) => {
+            <tr key={invoice.id} className="h-8">
+              
+            </tr>
+          })}
+        </tbody>
+      </table>
+          
+        
+      
+    )}
+  );</Container>
+
+    
 };
 
 function InputLabel({ value }) {
