@@ -1,10 +1,7 @@
 import { Row, Container } from "reactstrap";
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Header from "../Components/Header";
-import Spinner from "../Components/Spinner";
-import axios from "axios";
 
 const HomePage = () => {
   return (

@@ -139,8 +139,8 @@ const EnterInvoice = () => {
           <InputLabel id="warranty-label">Warranty</InputLabel>
           <Select
             labelId="warranty-label"
-            name="warranty"
-            value={formData.warranty}
+            name={"warranty"}
+            value={formData.Warranty}
             //onChange={handleFormChange}
             label="Warranty"
           >

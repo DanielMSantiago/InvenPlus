@@ -1,5 +1,5 @@
 import express from 'express';
-import { Invoice } from '../models/invoiceSchema';
+import { Invoice } from '../models/invoiceSchema.js';
 
 const router = express.Router();
 
@@ -40,7 +40,7 @@ router.post('/', async (request, response) => {
 
     } catch (error) {
         console.log(error.message);
-        response.status(500).send({ mesage: 'Internal Server Error' });
+        response.status(500).send({ message: 'Internal Server Error' });
     }
 });
 

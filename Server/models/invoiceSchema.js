@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const invoiceSchema = new mongoose.Schema({
     PoNumber: {
-        type: Number,
+        type: String,
         required: true,
     },
     DistroInvoiceNum: {
-        type: Number,
+        type: String,
         required: true,
     },
     Distro: {
@@ -19,11 +19,9 @@ const invoiceSchema = new mongoose.Schema({
     },
     CustName: {
         type: String,
-        required: true,
     },
     Warranty: {
         type: Boolean,
-        required: true,
     },
     AmountOrd: {
         type: Number,

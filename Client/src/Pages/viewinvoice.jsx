@@ -1,22 +1,24 @@
-import { Container, Table } from "reactstrap";
-import { FormControl, Select, MenuItem } from "@mui/material";
+import Container from "@mui/material/Container";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { useState, useEffect } from "react";
-import Spinner from "../Components/spinner";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import Spinner from "../Components/Spinner";
 
 const ViewInvoice = () => {
   const [selectedValue, setSelectedValue] = useState("");
+  const [invoice, setInvoice] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
 
   const handleDropChange = (e) => {
     setSelectedValue(e.target.value);
   };
 
-  const [invoice, setInvoice] = useState([]);
-  const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:5555/invoice")
+      .get(`http://localhost:5555/invoice/${id}`)
       .then((response) => {
         setInvoice(response.data.data);
         setLoading(false);
@@ -25,7 +27,7 @@ const ViewInvoice = () => {
         console.log(error);
         setLoading(false);
       });
-  });
+  }, [id]);
 
   return (
     <Container>
@@ -36,48 +38,49 @@ const ViewInvoice = () => {
           labelId="warranty-label"
           name="warranty"
           label="Warranty"
+          value={selectedValue}
           onChange={handleDropChange}
         >
-          <MenuItem id="PONum">PO Number</MenuItem>
-          <MenuItem id="InvNum">Invoice Number</MenuItem>
+          <MenuItem value="PONum">PO Number</MenuItem>
+          <MenuItem value="InvNum">Invoice Number</MenuItem>
         </Select>
       </FormControl>
-      <InputLabel value={selectedValue}></InputLabel>
-    {loading ? (
-      <Spinner/>
-    ) : (
-      <table className="w-full border-separate border-spacing-2" >
-
-        <thead>
-          <tr>
-            <th className="border-slate-600 rounded-md">PO</th>
-            <th className="border-slate-600 rounded-md">Invoice Number</th>
-            <th className="border-slate-600 rounded-md">Distributor</th>
-          </tr>
-        </thead>
-        <tbody>
-          {invoice.map((invoice, index) => {
-            <tr key={invoice.id} className="h-8">
-              
+      <div>
+        <label>Selected Value: {selectedValue}</label>
+      </div>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <table className="w-full border-separate border-spacing-2">
+          <thead>
+            <tr>
+              <th className="border-slate-600 rounded-md">PO</th>
+              <th className="border-slate-600 rounded-md">Invoice Number</th>
+              <th className="border-slate-600 rounded-md">Distributor</th>
             </tr>
-          })}
-        </tbody>
-      </table>
-          
-        
-      
-    )}
-  );</Container>
-
-    
-};
-
-function InputLabel({ value }) {
-  return (
-    <div>
-      <label>Selected Value: {value}</label>
-    </div>
+          </thead>
+          <tbody>
+            {invoice.map((invoice, index) => (
+              <tr key={invoice.id} className="h-8">
+                <td className="border-slate-700 rounded-md text-center">
+                  {index + 1}
+                </td>
+                <td className="border-slate-700 rounded-md text-center">
+                  {invoice.PoNumber}
+                </td>
+                <td className="border-slate-700 rounded-md text-center">
+                  {invoice.DistroInvoiceNum}
+                </td>
+                <td className="border-slate-700 rounded-md text-center">
+                  {invoice.Distro}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </Container>
   );
-}
+};
 
 export default ViewInvoice;

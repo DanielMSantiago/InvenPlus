@@ -1,33 +1,30 @@
-import express, { response } from "express";
-import { mongoDBURL, PORT } from "./config.js";
+import express from "express";
 import mongoose from "mongoose";
-import { Invoice } from "./models/invoiceSchema.js";
-import invoiceRoutes from "./routes/invoiceRoutes.js"
+import invoiceRoutes from "./routes/invoiceRoutes.js";
+import dotenv from 'dotenv'
 import cors from "cors";
+dotenv.config();
 
-
+const PORT = process.env.PORT;
+const mongoDBURL = process.env.MONGODB_URL;
 const app = express();
 
 app.use(express.json());
 
 //Middleware for handling CORS policy
-app.use(cors({
-    origin: "http://localhost:5555",
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-type']
-}));
+app.use(cors());
 
 app.get('/', (request, response) => {
     console.log(request);
-    return response.status(234).send('Hello');
+    return response.status(200).send('Hello, server running!');
 });
 
-
+app.use('/invoice', invoiceRoutes)
 
 mongoose.connect(mongoDBURL).then(() => {
     console.log('App connected to database')
     app.listen(PORT, () => {
-        console.log(`App is listening on port: ${PORT}`);
+        console.log('App is listening on port:' + PORT);
     });
 }).catch((error) => {
     console.log(error);
