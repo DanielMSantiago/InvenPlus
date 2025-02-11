@@ -1,5 +1,5 @@
 import Container from "@mui/material/Container";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { FormControl } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -34,9 +34,16 @@ const ViewInvoice = () => {
         <table className="w-full border-separate border-spacing-2">
           <thead>
             <tr>
+              <th className="border-slate-600 rounded-md">Index</th>
               <th className="border-slate-600 rounded-md">PO</th>
               <th className="border-slate-600 rounded-md">Invoice number</th>
               <th className="border-slate-600 rounded-md">Distributor</th>
+              <th className="border-slate-600 rounded-md">Customer Name</th>
+              <th className="border-slate-600 rounded-md">Amount Ordered</th>
+              <th className="border-slate-600 rounded-md">Item Name</th>
+              <th className="border-slate-600 rounded-md">Item Model</th>
+              <th className="border-slate-600 rounded-md">Item Serial</th>
+              <th className="border-slate-600 rounded-md">Item Price</th>
             </tr>
           </thead>
           <tbody>
@@ -53,6 +60,24 @@ const ViewInvoice = () => {
                 </td>
                 <td className="border-slate-700 rounded-md text-center">
                   {invoice.Distro}
+                </td>
+                <td className="border-slate-700 rounded-md text-center">
+                  {invoice.CustName}
+                </td>
+                <td className="border-slate-700 rounded-md text-center">
+                  {invoice.AmountOrd}
+                </td>
+                <td className="border-slate-700 rounded-md text-center">
+                  {invoice.ItemName}
+                </td>
+                <td className="border-slate-700 rounded-md text-center">
+                  {invoice.ItemModel}
+                </td>
+                <td className="border-slate-700 rounded-md text-center">
+                  {invoice.ItemSerial}
+                </td>
+                <td className="border-slate-700 rounded-md text-center">
+                  {invoice.ItemPrice}
                 </td>
               </tr>
             ))}

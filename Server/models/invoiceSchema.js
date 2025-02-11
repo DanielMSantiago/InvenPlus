@@ -20,9 +20,7 @@ const invoiceSchema = new mongoose.Schema({
     CustName: {
         type: String,
     },
-    Warranty: {
-        type: Boolean,
-    },
+
     AmountOrd: {
         type: Number,
         required: true,
@@ -37,7 +35,7 @@ const invoiceSchema = new mongoose.Schema({
     },
     ItemSerial: {
         type: String,
-        required: true,
+
     },
     ItemPrice: {
         type: Number,

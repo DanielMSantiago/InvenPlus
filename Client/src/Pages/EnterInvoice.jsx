@@ -73,10 +73,20 @@ const EnterInvoice = () => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
     const dataToSend = {
-      formData,
-      formRows,
+      poNum: formData.poNum,
+      invoiceNum: formData.invoiceNum,
+      distributor: formData.distributor,
+      branch: formData.branch,
+      customerName: formData.customerName,
+      orderItems: formRows.map((row) => ({
+        AmountOrd: row.amount,
+        ItemName: row.itemName,
+        ItemModel: row.modelNum, // ✅ Ensure key matches backend
+        ItemSerial: row.serialNum,
+        ItemPrice: row.price,
+        Received: row.received,
+      })),
     };
     const fetchOptions = {
       method: "POST",
@@ -85,7 +95,7 @@ const EnterInvoice = () => {
       },
       body: JSON.stringify(dataToSend),
     };
-    fetch("/api/InvoiceEnter", fetchOptions)
+    fetch("http://localhost:5555/api/InvoiceEnter", fetchOptions)
       .then((response) => response.json())
       .then((data) => console.log("Success:", data))
       .catch((error) => console.error("Error:", error));
@@ -135,20 +145,6 @@ const EnterInvoice = () => {
           variant="outlined"
           sx={{ marginBottom: 2 }}
         />
-        <FormControl sx={{ m: 1, minWidth: 150 }}>
-          <InputLabel id="warranty-label">Warranty</InputLabel>
-          <Select
-            labelId="warranty-label"
-            name={"warranty"}
-            value={formData.Warranty}
-            //onChange={handleFormChange}
-            label="Warranty"
-          >
-            <MenuItem value="yes">Yes</MenuItem>
-            <MenuItem value="no">No</MenuItem>
-          </Select>
-        </FormControl>
-
         <div>
           <h2>Order Items</h2>
           {formRows.map((row) => (

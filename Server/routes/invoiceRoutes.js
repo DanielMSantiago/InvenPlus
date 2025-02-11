@@ -4,43 +4,53 @@ import { Invoice } from '../models/invoiceSchema.js';
 const router = express.Router();
 
 //Send an entered invoice to the database
-router.post('/', async (request, response) => {
+router.post("/", async (request, response) => {
     try {
-        if (!request.body.PoNumber ||
-            !request.body.DistroInvoiceNum ||
-            !request.body.Distro ||
-            !request.body.DistroBranch ||
-            !request.body.Warranty ||
-            !request.body.AmountOrd ||
-            !request.body.ItemModel ||
-            !request.body.ItemName ||
-            !request.body.ItemPrice
-        ) {
-            return response.status(400).send({
-                message: "Please send all required field: Po Number, Invoice Number, Distributor, Distributor Branch, Warranty, Amount Order, Item Name, Item Model Number",
-            })
-        }
-        const newInvoice = {
-            PoNumber: request.body.PoNumber,
-            DistroInvoiceNum: request.body.DistroInvoiceNum,
-            Distro: request.body.Distro,
-            DistroBranch: request.body.DistroBranch,
-            CustName: request.body.CustName,
-            Warranty: request.body.Warranty,
-            AmountOrd: request.body.AmountOrd,
-            ItemName: request.body.ItemName,
-            ItemModel: request.body.ItemModel,
-            ItemSerial: request.body.ItemSerial,
-            ItemPrice: request.body.ItemPrice
+        // Validate required fields
+        const {
+            PoNumber,
+            DistroInvoiceNum,
+            Distro,
+            DistroBranch,
+            AmountOrd,
+            ItemModel,
+            ItemName,
+            ItemPrice,
+            CustName,
+            ItemSerial
+        } = request.body;
+
+        console.log("Request Body: ", request.body)
+
+        if (!PoNumber || !DistroInvoiceNum || !Distro || !DistroBranch ||
+            !AmountOrd || !ItemModel || !ItemName || !ItemPrice) {
+            return response.status(400).json({
+                message: "Please send all required fields: Po Number, Invoice Number, Distributor, Distributor Branch, Warranty, Amount Order, Item Name, Item Model Number",
+            });
         }
 
-        const invoice = await Invoice.create(newInvoice)
+        // Create a new invoice object
+        const newInvoice = new Invoice({
+            PoNumber,
+            DistroInvoiceNum,
+            Distro,
+            DistroBranch,
+            CustName,
+            AmountOrd,
+            ItemName,
+            ItemModel,
+            ItemSerial,
+            ItemPrice
+        });
 
-        return response.status(201).send(invoice)
+        // Save the invoice to the database
+        const savedInvoice = await newInvoice.save();
+
+        return response.status(201).json(savedInvoice);
 
     } catch (error) {
-        console.log(error.message);
-        response.status(500).send({ message: 'Internal Server Error' });
+        console.error("Error saving invoice:", error.message);
+        response.status(500).json({ message: "Internal Server Error" });
     }
 });
 
