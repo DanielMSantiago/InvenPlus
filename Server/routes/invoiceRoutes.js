@@ -12,18 +12,14 @@ router.post("/", async (request, response) => {
             DistroInvoiceNum,
             Distro,
             DistroBranch,
-            AmountOrd,
-            ItemModel,
-            ItemName,
-            ItemPrice,
-            CustName,
-            ItemSerial
+            OrderItems
         } = request.body;
 
         console.log("Request Body: ", request.body)
+        console.log("Order Items: ", request.body.OrderItems)
 
         if (!PoNumber || !DistroInvoiceNum || !Distro || !DistroBranch ||
-            !AmountOrd || !ItemModel || !ItemName || !ItemPrice) {
+            !OrderItems) {
             return response.status(400).json({
                 message: "Please send all required fields: Po Number, Invoice Number, Distributor, Distributor Branch, Warranty, Amount Order, Item Name, Item Model Number",
             });
@@ -36,11 +32,7 @@ router.post("/", async (request, response) => {
             Distro,
             DistroBranch,
             CustName,
-            AmountOrd,
-            ItemName,
-            ItemModel,
-            ItemSerial,
-            ItemPrice
+            OrderItems
         });
 
         // Save the invoice to the database

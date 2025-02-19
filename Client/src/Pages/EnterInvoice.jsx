@@ -30,12 +30,6 @@ const EnterInvoice = () => {
     distributor: "",
     branch: "",
     customerName: "",
-    warrant: "",
-    amount: "",
-    itemName: "",
-    modelNum: "",
-    serialNum: "",
-    price: "",
   });
 
   const handleRowChange = (id, event) => {
@@ -73,29 +67,33 @@ const EnterInvoice = () => {
   };
 
   const handleSubmit = (event) => {
+    event.preventDefault();
+
     const dataToSend = {
-      poNum: formData.poNum,
-      invoiceNum: formData.invoiceNum,
-      distributor: formData.distributor,
-      branch: formData.branch,
-      customerName: formData.customerName,
-      orderItems: formRows.map((row) => ({
+      PoNumber: formData.poNum,
+      DistroInvoiceNum: formData.invoiceNum,
+      Distro: formData.distributor,
+      DistroBranch: formData.branch,
+      CustName: formData.customerName,
+      OrderItems: formRows.map((row) => ({
         AmountOrd: row.amount,
         ItemName: row.itemName,
-        ItemModel: row.modelNum, // ✅ Ensure key matches backend
+        ItemModel: row.modelNum,
         ItemSerial: row.serialNum,
         ItemPrice: row.price,
         Received: row.received,
       })),
     };
-    const fetchOptions = {
+
+    console.log("Sending Data:", JSON.stringify(dataToSend, null, 2));
+
+    fetch("http://localhost:5555/api/invoice", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(dataToSend),
-    };
-    fetch("http://localhost:5555/api/InvoiceEnter", fetchOptions)
+    })
       .then((response) => response.json())
       .then((data) => console.log("Success:", data))
       .catch((error) => console.error("Error:", error));
