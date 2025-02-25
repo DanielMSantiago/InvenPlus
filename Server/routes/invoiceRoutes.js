@@ -12,11 +12,11 @@ router.post("/", async (request, response) => {
             DistroInvoiceNum,
             Distro,
             DistroBranch,
+            CustName,
             OrderItems
         } = request.body;
 
         console.log("Request Body: ", request.body)
-        console.log("Order Items: ", request.body.OrderItems)
 
         if (!PoNumber || !DistroInvoiceNum || !Distro || !DistroBranch ||
             !OrderItems) {
