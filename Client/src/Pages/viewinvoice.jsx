@@ -1,5 +1,12 @@
-import Container from "@mui/material/Container";
-import { FormControl } from "@mui/material";
+import {
+  Container,
+  FormControl,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  TableCell,
+} from "@mui/material";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -27,62 +34,93 @@ const ViewInvoice = () => {
   return (
     <Container>
       <h1>View Invoices</h1>
-      <FormControl sx={{ m: 1, minWidth: 150 }}></FormControl>
+      <FormControl sx={{ m: 1, minWidTableHead: 150 }}></FormControl>
       {loading ? (
         <Spinner />
       ) : (
-        <table className="w-full border-separate border-spacing-2">
-          <thead>
-            <tr>
-              <th className="border-slate-600 rounded-md">Index</th>
-              <th className="border-slate-600 rounded-md">PO</th>
-              <th className="border-slate-600 rounded-md">Invoice number</th>
-              <th className="border-slate-600 rounded-md">Distributor</th>
-              <th className="border-slate-600 rounded-md">Customer Name</th>
-              <th className="border-slate-600 rounded-md">Amount Ordered</th>
-              <th className="border-slate-600 rounded-md">Item Name</th>
-              <th className="border-slate-600 rounded-md">Item Model</th>
-              <th className="border-slate-600 rounded-md">Item Serial</th>
-              <th className="border-slate-600 rounded-md">Item Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoice.map((invoice, index) => (
-              <tr key={invoice._id} className="h-8">
-                <td className="border-slate-700 rounded-md text-center">
-                  {index + 1}
-                </td>
-                <td className="border-slate-700 rounded-md text-center">
+        <Table sx={{ tableLayout: "fixed" }}>
+          <TableHead>
+            <TableRow>
+              <TableCell className="border-slate-600 rounded-md">PO</TableCell>
+              <TableCell className="border-slate-600 rounded-md">
+                Invoice number
+              </TableCell>
+              <TableCell className="border-slate-600 rounded-md">
+                Distributor
+              </TableCell>
+              <TableCell className="border-slate-600 rounded-md">
+                Customer Name
+              </TableCell>
+              <TableCell className=" border-slate-600 rounded-md">
+                Amount
+              </TableCell>
+              <TableCell className="border-slate-600 rounded-md">
+                Item Name
+              </TableCell>
+              <TableCell className="border-slate-600 rounded-md">
+                Item Model
+              </TableCell>
+              <TableCell className="border-slate-600 rounded-md">
+                Item Serial
+              </TableCell>
+              <TableCell className="border-slate-600 rounded-md">
+                Item Price
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {invoice.map((invoice) => (
+              <TableRow key={invoice._id} className="h-8">
+                <TableCell className="border-slate-700 rounded-md text-center">
                   {invoice.PoNumber}
-                </td>
-                <td className="border-slate-700 rounded-md text-center">
+                </TableCell>
+                <TableCell className="border-slate-700 rounded-md text-center">
                   {invoice.DistroInvoiceNum}
-                </td>
-                <td className="border-slate-700 rounded-md text-center">
+                </TableCell>
+                <TableCell className="border-slate-700 rounded-md text-center">
                   {invoice.Distro}
-                </td>
-                <td className="border-slate-700 rounded-md text-center">
+                </TableCell>
+                <TableCell className="border-slate-700 rounded-md text-center">
                   {invoice.CustName}
-                </td>
-                <td className="border-slate-700 rounded-md text-center">
+                </TableCell>
+                {invoice.OrderItems?.map((item, itemIndex) => (
+                  <TableRow key={itemIndex}>
+                    <TableCell className="border-slate-700 rounded-md text-center">
+                      {item.AmountOrd}
+                    </TableCell>
+                    <TableCell className="border-slate-700 rounded-md text-center">
+                      {item.ItemName}
+                    </TableCell>
+                    <TableCell className="border-slate-700 rounded-md text-center">
+                      {item.ItemModel}
+                    </TableCell>
+                    <TableCell className="border-slate-700 rounded-md text-center">
+                      {item.ItemSerial}
+                    </TableCell>
+                    <TableCell className="border-slate-700 rounded-md text-center">
+                      {item.ItemPrice}
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {/*} <TableCell className="border-slate-700 rounded-md text-center">
                   {invoice.AmountOrd}
-                </td>
-                <td className="border-slate-700 rounded-md text-center">
+                </TableCell>
+                <TableCell className="border-slate-700 rounded-md text-center">
                   {invoice.ItemName}
-                </td>
-                <td className="border-slate-700 rounded-md text-center">
+                </TableCell>
+                <TableCell className="border-slate-700 rounded-md text-center">
                   {invoice.ItemModel}
-                </td>
-                <td className="border-slate-700 rounded-md text-center">
+                </TableCell>
+                <TableCell className="border-slate-700 rounded-md text-center">
                   {invoice.ItemSerial}
-                </td>
-                <td className="border-slate-700 rounded-md text-center">
+                </TableCell>
+                <TableCell className="border-slate-700 rounded-md text-center">
                   {invoice.ItemPrice}
-                </td>
-              </tr>
+                </TableCell>*/}
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       )}
     </Container>
   );

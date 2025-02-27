@@ -83,7 +83,7 @@ const EnterInvoice = () => {
 
     console.log("Sending Data:", JSON.stringify(dataToSend, null, 2));
 
-    fetch("http://localhost:5555/api/invoice", {
+    fetch("http://localhost:5555/invoice", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

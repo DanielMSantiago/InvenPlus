@@ -41,8 +41,7 @@ router.post("/", async (request, response) => {
         return response.status(201).json(savedInvoice);
 
     } catch (error) {
-        console.error("Error saving invoice:", error.message);
-        response.status(500).json({ message: "Internal Server Error" });
+        response.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 });
 

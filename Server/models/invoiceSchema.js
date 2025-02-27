@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const orderItemSchema = new mongoose.Schema({
-    AmountOrd: { type: Number, required: true },
+    AmountOrd: { type: String, required: true },
     ItemName: { type: String, required: true },
     ItemModel: { type: String, required: true },
     ItemSerial: { type: String, required: true },
-    ItemPrice: { type: Number, required: true },
+    ItemPrice: { type: String, required: true },
     Received: { type: Boolean }
 });
 
