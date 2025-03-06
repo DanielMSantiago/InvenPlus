@@ -6,6 +6,7 @@ import {
   TableRow,
   TableBody,
   TableCell,
+  TextField,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -34,91 +35,60 @@ const ViewInvoice = () => {
   return (
     <Container>
       <h1>View Invoices</h1>
+      <Container>
+        <TextField label="Search" size="small" />
+      </Container>
       <FormControl sx={{ m: 1, minWidTableHead: 150 }}></FormControl>
       {loading ? (
         <Spinner />
       ) : (
-        <Table sx={{ tableLayout: "fixed" }}>
+        <Table sx={{ minWidth: 650 }} className="table-fixed w-full">
           <TableHead>
             <TableRow>
-              <TableCell className="border-slate-600 rounded-md">PO</TableCell>
-              <TableCell className="border-slate-600 rounded-md">
-                Invoice number
-              </TableCell>
-              <TableCell className="border-slate-600 rounded-md">
-                Distributor
-              </TableCell>
-              <TableCell className="border-slate-600 rounded-md">
-                Customer Name
-              </TableCell>
-              <TableCell className=" border-slate-600 rounded-md">
-                Amount
-              </TableCell>
-              <TableCell className="border-slate-600 rounded-md">
-                Item Name
-              </TableCell>
-              <TableCell className="border-slate-600 rounded-md">
-                Item Model
-              </TableCell>
-              <TableCell className="border-slate-600 rounded-md">
-                Item Serial
-              </TableCell>
-              <TableCell className="border-slate-600 rounded-md">
-                Item Price
-              </TableCell>
+              <TableCell>PO</TableCell>
+              <TableCell>Invoice number</TableCell>
+              <TableCell>Distributor</TableCell>
+              <TableCell>Customer Name</TableCell>
+              <TableCell className="w-1/12 text-center">Amount</TableCell>
+              <TableCell className="w-1/6 text-center">Item Name</TableCell>
+              <TableCell className="w-1/6 text-center">Item Model</TableCell>
+              <TableCell className="w-1/6 text-center">Item Serial</TableCell>
+              <TableCell className="w-1/6 text-center">Item Price</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {invoice.map((invoice) => (
-              <TableRow key={invoice._id} className="h-8">
-                <TableCell className="border-slate-700 rounded-md text-center">
-                  {invoice.PoNumber}
-                </TableCell>
-                <TableCell className="border-slate-700 rounded-md text-center">
-                  {invoice.DistroInvoiceNum}
-                </TableCell>
-                <TableCell className="border-slate-700 rounded-md text-center">
-                  {invoice.Distro}
-                </TableCell>
-                <TableCell className="border-slate-700 rounded-md text-center">
-                  {invoice.CustName}
-                </TableCell>
-                {invoice.OrderItems?.map((item, itemIndex) => (
-                  <TableRow key={itemIndex}>
-                    <TableCell className="border-slate-700 rounded-md text-center">
-                      {item.AmountOrd}
-                    </TableCell>
-                    <TableCell className="border-slate-700 rounded-md text-center">
-                      {item.ItemName}
-                    </TableCell>
-                    <TableCell className="border-slate-700 rounded-md text-center">
-                      {item.ItemModel}
-                    </TableCell>
-                    <TableCell className="border-slate-700 rounded-md text-center">
-                      {item.ItemSerial}
-                    </TableCell>
-                    <TableCell className="border-slate-700 rounded-md text-center">
-                      {item.ItemPrice}
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {/*} <TableCell className="border-slate-700 rounded-md text-center">
-                  {invoice.AmountOrd}
-                </TableCell>
-                <TableCell className="border-slate-700 rounded-md text-center">
-                  {invoice.ItemName}
-                </TableCell>
-                <TableCell className="border-slate-700 rounded-md text-center">
-                  {invoice.ItemModel}
-                </TableCell>
-                <TableCell className="border-slate-700 rounded-md text-center">
-                  {invoice.ItemSerial}
-                </TableCell>
-                <TableCell className="border-slate-700 rounded-md text-center">
-                  {invoice.ItemPrice}
-                </TableCell>*/}
-              </TableRow>
-            ))}
+            {invoice.map((invoice) =>
+              invoice.OrderItems?.map((item, itemIndex) => (
+                <TableRow key={`${invoice._id}-${itemIndex}`} className="h-8">
+                  {/* Merge PO, Invoice Number, Distributor, Customer Name only for the first item of each invoice */}
+                  {itemIndex === 0 ? (
+                    <>
+                      <TableCell rowSpan={invoice.OrderItems.length}>
+                        {invoice.PoNumber}
+                      </TableCell>
+                      <TableCell rowSpan={invoice.OrderItems.length}>
+                        {invoice.DistroInvoiceNum}
+                      </TableCell>
+                      <TableCell rowSpan={invoice.OrderItems.length}>
+                        {invoice.Distro}
+                      </TableCell>
+                      <TableCell rowSpan={invoice.OrderItems.length}>
+                        {invoice.CustName}
+                      </TableCell>
+                    </>
+                  ) : null}
+
+                  {/* Order Items */}
+                  <TableCell className="w-1/12 text-center">
+                    {item.AmountOrd}
+                  </TableCell>
+                  <TableCell>{item.ItemName}</TableCell>
+                  <TableCell>{item.ItemModel}</TableCell>
+                  <TableCell>{item.ItemSerial}</TableCell>
+                  <TableCell>{item.ItemPrice}</TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       )}
