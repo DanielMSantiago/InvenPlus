@@ -16,16 +16,28 @@ router.post("/", async (request, response) => {
             OrderItems
         } = request.body;
 
-        console.log("Request Body: ", request.body)
+        console.log("Request Body: ", request.body);
 
-        if (!PoNumber || !DistroInvoiceNum || !Distro || !DistroBranch ||
-            !OrderItems) {
+        if (!PoNumber || !DistroInvoiceNum || !Distro || !DistroBranch || !OrderItems) {
             return response.status(400).json({
                 message: "Please send all required fields: Po Number, Invoice Number, Distributor, Distributor Branch, Warranty, Amount Order, Item Name, Item Model Number",
             });
         }
 
-        // Create a new invoice object
+        // Validate duplicate PO Number BEFORE saving
+        const existingInvoiceByPo = await Invoice.findOne({ PoNumber });
+
+        if (existingInvoiceByPo) {
+            return response.status(400).json({ message: "Found duplicate PO Number" });
+        }
+
+        const existingInvoiceByInvoiceNum = await Invoice.findOne({ DistroInvoiceNum })
+
+        if (existingInvoiceByInvoiceNum) {
+            return response.status(400).json({ message: "Found Duplicate Invoice Number" })
+        }
+
+        // Create and save the new invoice
         const newInvoice = new Invoice({
             PoNumber,
             DistroInvoiceNum,
@@ -35,14 +47,16 @@ router.post("/", async (request, response) => {
             OrderItems
         });
 
-        // Save the invoice to the database
         const savedInvoice = await newInvoice.save();
 
-        return response.status(201).json(savedInvoice);
+        return response.status(201).json({ message: "Invoice Added", newInvoice: savedInvoice });
 
     } catch (error) {
-        response.status(500).json({ message: "Internal Server Error", error: error.message });
+        return response.status(500).json({ message: "Internal Server Error", error: error.message });
     }
+
+
+
 });
 
 //get method for finding invoices
@@ -89,5 +103,6 @@ router.delete('/:PoNumber', async (request, response) => {
         response.status(500).send({ message: error.message })
     }
 })
+
 
 export default router
