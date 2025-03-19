@@ -28,6 +28,8 @@ const EnterInvoice = () => {
     customerName: "",
   });
 
+  const [message, setMessage] = useState("");
+
   const handleRowChange = (id, event) => {
     const { name, value, type, checked } = event.target;
     setFormRows((prevRows) =>
@@ -62,8 +64,9 @@ const EnterInvoice = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setMessage("");
 
     const dataToSend = {
       PoNumber: formData.poNum,
@@ -83,16 +86,27 @@ const EnterInvoice = () => {
 
     console.log("Sending Data:", JSON.stringify(dataToSend, null, 2));
 
-    fetch("http://localhost:5555/invoice", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataToSend),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log("Success:", data))
-      .catch((error) => console.error("Error:", error));
+    try {
+      const response = await fetch("http://localhost:5555/invoice", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      // Handle HTTP errors properly
+      const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error(responseData.message || "Failed to submit invoice");
+      }
+
+      console.log("Success:", responseData);
+      setMessage({ text: responseData.message, type: "success" }); // ✅ Show success message
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage({ text: error.message, type: "error" }); // ✅ Show error message
+    }
   };
 
   return (
@@ -204,12 +218,31 @@ const EnterInvoice = () => {
               </FormGroup>
             </div>
           ))}
-          <Button variant="contained" onClick={addRow} sx={{ marginTop: 2 }}>
+          <Button
+            variant="contained"
+            onClick={addRow}
+            sx={{ marginTop: 2, marginLeft: 2 }}
+          >
             Add Item
           </Button>
-          <Button type="submit" variant="contained" sx={{ marginTop: 2 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ marginTop: 2, marginLeft: 2 }}
+          >
             Submit Invoice
           </Button>
+          {message && (
+            <p
+              style={{
+                color: message.type === "success" ? "green" : "red",
+                fontWeight: "bold",
+                marginLeft: 10,
+              }}
+            >
+              {message.text}
+            </p>
+          )}
         </div>
       </form>
     </div>

@@ -7,7 +7,10 @@ import {
   TableBody,
   TableCell,
   TextField,
+  Button,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -32,11 +35,23 @@ const ViewInvoice = () => {
       });
   }, [id]);
 
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5555/invoice/${id}`);
+      setInvoice(invoice.filter((inv) => inv._id !== id));
+    } catch (error) {
+      console.log("Error deleting invoice: ", error);
+    }
+  };
+
   return (
     <Container>
       <h1>View Invoices</h1>
       <Container>
-        <TextField label="Search" size="small" />
+        <TextField label="Search PO" size="small" />
+        <Button variant="contained" sx={{ marginLeft: 2 }}>
+          Search
+        </Button>
       </Container>
       <FormControl sx={{ m: 1, minWidTableHead: 150 }}></FormControl>
       {loading ? (
@@ -86,12 +101,21 @@ const ViewInvoice = () => {
                   <TableCell>{item.ItemModel}</TableCell>
                   <TableCell>{item.ItemSerial}</TableCell>
                   <TableCell>{item.ItemPrice}</TableCell>
+                  <Button
+                    onChange={handleDelete}
+                    endIcon={<DeleteIcon />}
+                  ></Button>
+                  <Button endIcon={<EditIcon />}></Button>
                 </TableRow>
               ))
             )}
           </TableBody>
+          <Button onChange={handleDelete} endIcon={<DeleteIcon />}></Button>
+          <Button endIcon={<EditIcon />}></Button>
         </Table>
       )}
+      <Button onChange={handleDelete} endIcon={<DeleteIcon />}></Button>
+      <Button endIcon={<EditIcon />}></Button>
     </Container>
   );
 };
