@@ -86,23 +86,20 @@ router.get('/:PoNumber', async (request, response) => {
     }
 });
 
-//Delete an invoice using PO Number
-router.delete('/:PoNumber', async (request, response) => {
+//Delete an invoice 
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    console.log('Attempting to delete invoice with ID:', id);
     try {
-        const { PoNumber } = request.params;
-
-        const result = await Invoice.findOneAndDelete({ PoNumber })
-
-        if (!result) {
-            return response.status(404).json({ message: "Invoice not found" })
+        const deletedInvoice = await Invoice.findByIdAndDelete(id);
+        if (!deletedInvoice) {
+            return res.status(404).json({ message: 'Invoice not found' });
         }
-
-        return response.status(200).send({ message: 'Invoice deleted successfully' })
-    } catch (error) {
-        console.log(error.message);
-        response.status(500).send({ message: error.message })
+        res.status(200).json({ message: 'Invoice deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Internal server error', error: err.message });
     }
-})
+});
 
 
 export default router
