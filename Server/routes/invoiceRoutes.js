@@ -3,6 +3,8 @@ import { Invoice } from '../models/invoiceSchema.js';
 
 const router = express.Router();
 
+
+
 //Send an entered invoice to the database
 router.post("/", async (request, response) => {
     try {
@@ -90,12 +92,16 @@ router.get('/:PoNumber', async (request, response) => {
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     console.log('Attempting to delete invoice with ID:', id);
+
+
     try {
         const deletedInvoice = await Invoice.findByIdAndDelete(id);
         if (!deletedInvoice) {
-            return res.status(404).json({ message: 'Invoice not found' });
+            res.status(404).json({ message: 'Invoice not found' });
+
         }
-        res.status(200).json({ message: 'Invoice deleted successfully' });
+        res.status(200).json({ message: ` ${deletedInvoice.DistroInvoiceNum} Invoice deleted successfully` });
+
     } catch (err) {
         res.status(500).json({ message: 'Internal server error', error: err.message });
     }

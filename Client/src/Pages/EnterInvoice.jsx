@@ -55,6 +55,11 @@ const EnterInvoice = () => {
       },
     ]);
   };
+
+  const deleteRow = () => {
+    setFormRows((prevRows) => prevRows.slice(0, -1));
+  };
+
   const handleFormChange = (e) => {
     setFormData((prevalue) => {
       return {
@@ -224,6 +229,13 @@ const EnterInvoice = () => {
             sx={{ marginTop: 2, marginLeft: 2 }}
           >
             Add Item
+          </Button>
+          <Button
+            variant="contained"
+            onClick={deleteRow}
+            sx={{ marginTop: 2, marginLeft: 2 }}
+          >
+            Delete Item
           </Button>
           <Button
             type="submit"
