@@ -18,7 +18,7 @@ import axios from "axios";
 import Spinner from "../Components/Spinner";
 
 const ViewInvoice = () => {
-  const [invoice, setInvoice] = useState([]);
+  const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
@@ -27,7 +27,7 @@ const ViewInvoice = () => {
     axios
       .get("http://localhost:5555/invoice")
       .then((response) => {
-        setInvoice(response.data);
+        setInvoices(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -36,13 +36,19 @@ const ViewInvoice = () => {
       });
   }, [id]);
 
-  const handleDelete = async (e, id) => {
-    e.preventDefault();
+  const handleDelete = async (invoiceId) => {
+    console.log("Trying to delete invoice with ID:", invoiceId); // ✅ Confirm this shows
     try {
-      await axios.delete(`http://localhost:5555/invoice/${id}`);
-      setInvoice(invoice.filter((inv) => inv._id === id));
+      const response = await axios.delete(
+        `http://localhost:5555/api/invoice/${invoiceId}`
+      );
+      console.log(response.data);
+
+      setInvoices((prevInvoices) =>
+        prevInvoices.filter((invoice) => invoice._id !== invoiceId)
+      );
     } catch (error) {
-      console.log("Error deleting invoice: ", error);
+      console.error("Error deleting invoice:", error);
     }
   };
 
@@ -75,10 +81,9 @@ const ViewInvoice = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {invoice.map((invoice) =>
+              {invoices.map((invoice) =>
                 invoice.OrderItems?.map((item, itemIndex) => (
                   <TableRow key={`${invoice._id}-${itemIndex}`} className="h-8">
-                    {/* Merge PO, Invoice Number, Distributor, Customer Name only for the first item of each invoice */}
                     {itemIndex === 0 ? (
                       <>
                         <TableCell rowSpan={invoice.OrderItems.length}>
@@ -96,7 +101,6 @@ const ViewInvoice = () => {
                       </>
                     ) : null}
 
-                    {/* Order Items */}
                     <TableCell className="w-1/12 text-center">
                       {item.AmountOrd}
                     </TableCell>
@@ -109,14 +113,11 @@ const ViewInvoice = () => {
                         rowSpan={invoice.OrderItems.length}
                         className="w-1/6 text-center"
                       >
-                        <IconButton
-                          //onClick={() => handleEdit(invoice)}
-                          className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
-                        >
+                        <IconButton className="bg-blue-500 text-white px-2 py-1 rounded mr-2">
                           <EditIcon />
                         </IconButton>
                         <IconButton
-                          onClick={(e) => handleDelete(e, invoice._id)}
+                          onClick={() => handleDelete(invoice._id)} // ✅ Corrected here
                           className="bg-red-500 text-white px-2 py-1 rounded"
                         >
                           <DeleteIcon />

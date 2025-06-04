@@ -1,6 +1,7 @@
 {
   "name": "hvac-inventory-new",
   "version": "1.1.0",
+  "proxy": "http://localhost:5555",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",

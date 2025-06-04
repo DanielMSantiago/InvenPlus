@@ -19,7 +19,7 @@ app.get('/', (request, response) => {
     return response.status(200).send('Hello, server running!');
 });
 
-app.use('/invoice', invoiceRoutes)
+app.use('/api', invoiceRoutes)
 
 mongoose.connect(mongoDBURL).then(() => {
     console.log('App connected to database')

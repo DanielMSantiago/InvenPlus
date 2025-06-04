@@ -89,21 +89,16 @@ router.get('/:PoNumber', async (request, response) => {
 });
 
 //Delete an invoice 
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-    console.log('Attempting to delete invoice with ID:', id);
-
-
+router.delete("/invoice/:id", async (request, response) => {
+    const { id } = request.params;
+    console.log("DELETE /invoice/:id route hit:", request.params.id);
     try {
-        const deletedInvoice = await Invoice.findByIdAndDelete(id);
-        if (!deletedInvoice) {
-            res.status(404).json({ message: 'Invoice not found' });
-
-        }
-        res.status(200).json({ message: ` ${deletedInvoice.DistroInvoiceNum} Invoice deleted successfully` });
-
+        const deleted = await Invoice.findByIdAndDelete(id);
+        if (!deleted)
+            return response.status(404).json({ message: "Invoice not found" });
+        response.json({ message: "Invoice deleted successfully", deleted });
     } catch (err) {
-        res.status(500).json({ message: 'Internal server error', error: err.message });
+        response.status(500).json({ message: "Error deleting invoice", error: err.message });
     }
 });
 
