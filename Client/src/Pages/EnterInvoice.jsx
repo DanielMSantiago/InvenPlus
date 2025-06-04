@@ -92,7 +92,7 @@ const EnterInvoice = () => {
     console.log("Sending Data:", JSON.stringify(dataToSend, null, 2));
 
     try {
-      const response = await fetch("http://localhost:5555/invoice", {
+      const response = await fetch("http://localhost:5555/api", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

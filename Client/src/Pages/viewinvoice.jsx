@@ -37,7 +37,6 @@ const ViewInvoice = () => {
   }, [id]);
 
   const handleDelete = async (invoiceId) => {
-    console.log("Trying to delete invoice with ID:", invoiceId); // ✅ Confirm this shows
     try {
       const response = await axios.delete(
         `http://localhost:5555/api/invoice/${invoiceId}`
@@ -117,7 +116,7 @@ const ViewInvoice = () => {
                           <EditIcon />
                         </IconButton>
                         <IconButton
-                          onClick={() => handleDelete(invoice._id)} // ✅ Corrected here
+                          onClick={() => handleDelete(invoice._id)} //
                           className="bg-red-500 text-white px-2 py-1 rounded"
                         >
                           <DeleteIcon />

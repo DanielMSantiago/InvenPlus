@@ -91,7 +91,6 @@ router.get('/:PoNumber', async (request, response) => {
 //Delete an invoice 
 router.delete("/invoice/:id", async (request, response) => {
     const { id } = request.params;
-    console.log("DELETE /invoice/:id route hit:", request.params.id);
     try {
         const deleted = await Invoice.findByIdAndDelete(id);
         if (!deleted)
