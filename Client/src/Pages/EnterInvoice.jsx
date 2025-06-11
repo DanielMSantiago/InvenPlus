@@ -6,6 +6,7 @@ import {
   FormGroup,
   FormControlLabel,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const EnterInvoice = () => {
   const [formRows, setFormRows] = useState([
@@ -116,6 +117,18 @@ const EnterInvoice = () => {
 
   return (
     <div>
+      <div style={{ display: "flex", justifyContent: "left", gap: "1rem" }}>
+        <Link to={"/"}>
+          <Button variant="contained" color="primary">
+            Home Page
+          </Button>
+        </Link>
+        <Link to={"/ViewInvoice"}>
+          <Button variant="contained" color="primary">
+            View Invoices
+          </Button>
+        </Link>
+      </div>
       <h1>Enter Order Information</h1>
       <form onSubmit={handleSubmit}>
         <TextField

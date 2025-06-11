@@ -13,7 +13,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Components/Spinner";
 
@@ -25,7 +25,7 @@ const ViewInvoice = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:5555/invoice")
+      .get("http://localhost:5555/api")
       .then((response) => {
         setInvoices(response.data);
         setLoading(false);
@@ -53,7 +53,24 @@ const ViewInvoice = () => {
 
   return (
     <Container>
-      <h1>View Invoices</h1>
+      <Container
+        style={{ display: "inline-flex", justifyContent: "left", gap: "1rem" }}
+      >
+        <Link to={"/"}>
+          <Button variant="contained" color="primary">
+            Home Page
+          </Button>
+        </Link>
+        <Link to={"/enterinvoice"}>
+          <Button variant="contained" color="primary">
+            Enter Invoice
+          </Button>
+        </Link>
+      </Container>
+
+      <div>
+        <h1>View Invoices</h1>
+      </div>
       <Container>
         <TextField label="Search PO" size="small" />
         <Button variant="contained" sx={{ marginLeft: 2 }}>
@@ -112,9 +129,11 @@ const ViewInvoice = () => {
                         rowSpan={invoice.OrderItems.length}
                         className="w-1/6 text-center"
                       >
-                        <IconButton className="bg-blue-500 text-white px-2 py-1 rounded mr-2">
-                          <EditIcon />
-                        </IconButton>
+                        <Link to={`/updatentry/` + invoice._id}>
+                          <IconButton className="bg-blue-500 text-white px-2 py-1 rounded mr-2">
+                            <EditIcon />
+                          </IconButton>
+                        </Link>
                         <IconButton
                           onClick={() => handleDelete(invoice._id)} //
                           className="bg-red-500 text-white px-2 py-1 rounded"
