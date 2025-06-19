@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { request } from 'express';
 import { Invoice } from '../models/invoiceSchema.js';
 
 const router = express.Router();
@@ -100,6 +100,28 @@ router.delete("/invoice/:id", async (request, response) => {
         response.status(500).json({ message: "Error deleting invoice", error: err.message });
     }
 });
+
+router.patch("/invoice/:id", async (request, response) => {
+    const { id } = request.params;
+    const updates = request.body;
+
+    try {
+        const updatedInvoice = await Invoice.findByIdAndUpdate(id, updates, {
+            new: true,
+            runValidators: true,
+        });
+
+        if (!updatedInvoice) {
+            return response.status(404).json({ message: "Invoice not found" })
+        }
+        response.json(updatedInvoice)
+    } catch (error) {
+        response.status(500).json({ error: "Failed to update invoice" })
+    }
+
+
+
+})
 
 
 export default router

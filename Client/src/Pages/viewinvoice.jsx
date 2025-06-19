@@ -51,6 +51,18 @@ const ViewInvoice = () => {
     }
   };
 
+  const handleEdit = async (invoiceId, updatedData) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:5555/api/invoice/${invoiceId}`,
+        updatedData
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error editing invoice:", error);
+    }
+  };
+
   return (
     <Container>
       <Container
@@ -129,7 +141,7 @@ const ViewInvoice = () => {
                         rowSpan={invoice.OrderItems.length}
                         className="w-1/6 text-center"
                       >
-                        <Link to={`/updatentry/` + invoice._id}>
+                        <Link to={() => handleEdit(invoice._id)}>
                           <IconButton className="bg-blue-500 text-white px-2 py-1 rounded mr-2">
                             <EditIcon />
                           </IconButton>
